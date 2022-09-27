@@ -119,13 +119,21 @@ try:
 except:
     pass
 
+from diffusers.pipelines.stable_diffusion import safety_checker
+
+def sc(self, clip_input, images) :
+    return images, [False for i in images]
+
+# edit StableDiffusionSafetyChecker class so that, when called, it just returns the images and an array of True values
+safety_checker.StableDiffusionSafetyChecker.forward = sc
+
 from diffusers.pipelines.stable_diffusion.safety_checker import StableDiffusionSafetyChecker
 from transformers import AutoFeatureExtractor
 
 # load safety model
-safety_model_id = "CompVis/stable-diffusion-safety-checker"
-safety_feature_extractor = None
-safety_checker = None
+#safety_model_id = "CompVis/stable-diffusion-safety-checker"
+#safety_feature_extractor = None
+#safety_checker = None
 
 # this is a fix for Windows users. Without it, javascript files will be served with text/html content-type and the bowser will not show any UI
 mimetypes.init()
